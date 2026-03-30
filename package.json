@@ -20,7 +20,7 @@
     "@astrojs/sitemap": "^3.6.0",
     "@tailwindcss/vite": "^4.1.15",
     "astro": "^5.15.1",
-    "tailwindcss": "^4.1.16"
+    "tailwindcss": "^4.2.2"
   },
   "devDependencies": {
     "husky": "^9.1.7",

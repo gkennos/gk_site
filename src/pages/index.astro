@@ -1,19 +1,27 @@
 ---
-import Layout from "@/layouts/Layout.astro";
-import About from "@/components/About.astro";
-import Projects from "@/components/Projects.astro";
-import Posts from "@/components/Posts.astro";
-import Contact from "@/components/Contact.astro";
-
-import Hero from "@/components/Hero.astro";
-
-import { HOME } from "@/consts";
+import Details from '../components/Details.astro';
+import Skills from '../components/Skills.astro';
+import { SITE_DATA } from '../data/site';
+import Layout from '../layouts/Layout.astro';
 ---
 
-<Layout title={HOME.TITLE} description={HOME.DESCRIPTION}>
-    <Hero />
-    <About />
-    <Projects />
-    <Posts />
-    <Contact />
+<Layout
+	title={SITE_DATA.pageTitle}
+	siteName={SITE_DATA.siteName}
+	siteDescription={SITE_DATA.siteDescription}
+>
+	<section class="clinical-hero relative overflow-hidden border-b border-slate-950">
+		<div class="clinical-grid pointer-events-none absolute inset-0"></div>
+		<div class="clinical-wash clinical-wash-a pointer-events-none absolute"></div>
+		<div class="clinical-wash clinical-wash-b pointer-events-none absolute"></div>
+		<div class="clinical-wash clinical-wash-c pointer-events-none absolute"></div>
+		<div
+			class="relative z-10 flex min-h-[calc(100dvh-5rem)] items-end px-4 py-12 sm:px-6 md:px-8 md:py-16"
+		>
+			<div class="flex max-w-[60rem] flex-col justify-end gap-8 md:gap-10 lg:pb-6">
+				<Details />
+			</div>
+		</div>
+	</section>
+	<Skills />
 </Layout>

@@ -1,33 +1,166 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
-@plugin '@tailwindcss/typography';
-
-@theme {
-  /* fonts */
-  --font-plex: "IBM Plex Mono", monospace;
-  --font-geist: "Geist", sans-serif;
-
-  /* colors */
-  --color-primary: oklch(86.89 0.29 142.02); /* #27FF0B*/
-  --color-background: oklch(99.7 0 0); /* #fefefe */
-  --color-foreground: oklch(0 0 0); /* #000000 */
-  --color-secondary: oklch(0.38 0 1); /* #434343*/
-}
-
-.heading {
-  @apply font-plex tracking-[-2%] font-bold;
+:root {
+	color-scheme: light;
 }
 
 html {
-  @apply scroll-smooth;
+	background: #f7f3ec;
 }
 
 body {
-  @apply font-geist text-foreground bg-background;
+	color: #16161d;
 }
 
-article {
-  @apply prose prose-neutral prose-img:mx-auto prose-img:my-auto text-lg leading-8;
-  @apply prose-headings:font-bold prose-headings:font-plex prose-headings:text-foreground mx-auto;
-  @apply text-secondary prose-a:underline-offset-2;
+.clinical-hero {
+	background:
+		radial-gradient(circle at 24% 78%, rgba(244, 247, 250, 0.56), transparent 26%),
+		radial-gradient(circle at 20% 22%, rgba(227, 195, 190, 0.24), transparent 34%),
+		radial-gradient(circle at 78% 18%, rgba(196, 182, 208, 0.18), transparent 30%),
+		radial-gradient(circle at 62% 78%, rgba(186, 208, 225, 0.16), transparent 34%),
+		linear-gradient(
+			135deg,
+			#e3c3be 0%,
+			#e0c0be 6%,
+			#ddbcc0 12%,
+			#d9b9c2 18%,
+			#d5b7c4 24%,
+			#d0b6c7 30%,
+			#ccb5ca 36%,
+			#c8b5cd 42%,
+			#c4b6d0 48%,
+			#c0b8d4 54%,
+			#bdbbd7 60%,
+			#bbbeda 66%,
+			#b9c2dc 72%,
+			#b8c6de 78%,
+			#b8cae0 84%,
+			#b9cee1 90%,
+			#bbd4e1 100%
+		);
+}
+
+.clinical-grid {
+	background-image:
+		linear-gradient(rgba(107, 128, 146, 0.08) 1px, transparent 1px),
+		linear-gradient(90deg, rgba(107, 128, 146, 0.08) 1px, transparent 1px);
+	background-size: 2.75rem 2.75rem;
+	mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.08));
+	opacity: 0.34;
+}
+
+.clinical-wash {
+	border-radius: 9999px;
+	filter: blur(42px);
+}
+
+.clinical-wash-a {
+	top: 4%;
+	left: 12%;
+	width: 30rem;
+	height: 16rem;
+	background: rgba(223, 190, 191, 0.2);
+}
+
+.clinical-wash-b {
+	top: 18%;
+	right: 14%;
+	width: 16rem;
+	height: 10rem;
+	background: rgba(199, 182, 208, 0.14);
+}
+
+.clinical-wash-c {
+	bottom: 4%;
+	left: 28%;
+	width: 26rem;
+	height: 12rem;
+	background: rgba(186, 208, 225, 0.08);
+}
+
+@media (max-width: 767px) {
+	.clinical-grid {
+		background-size: 2.2rem 2.2rem;
+		opacity: 0.28;
+	}
+
+	.clinical-wash-a {
+		left: -1rem;
+		width: 18rem;
+		height: 10rem;
+	}
+
+	.clinical-wash-b {
+		right: -1rem;
+		width: 10rem;
+		height: 7rem;
+	}
+
+	.clinical-wash-c,
+	.clinical-wash-b {
+		display: none;
+	}
+}
+
+::selection {
+	background: #fcd95b;
+	color: #16161d;
+}
+
+/* Custom Keyframes for Tailwind CSS 4 */
+@keyframes zoom-in {
+	0% {
+		opacity: 0;
+		transform: scale(0.75);
+	}
+	100% {
+		opacity: 1;
+		transform: scale(1);
+	}
+}
+
+@keyframes zoom-in-out {
+	0% {
+		transform: scale(1.1);
+	}
+	100% {
+		transform: scale(1);
+	}
+}
+
+@keyframes fade-up {
+	from {
+		opacity: 0;
+		transform: translateY(1.5rem);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+@keyframes fade-in {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
+}
+
+/* Animation Classes */
+.animate-zoom-in {
+	animation: zoom-in 500ms ease 300ms forwards;
+}
+
+.animate-zoom-in-out {
+	animation: zoom-in-out 700ms ease forwards;
+}
+
+.animate-fade-up {
+	animation: fade-up 700ms ease 300ms forwards;
+}
+
+.animate-fade-in {
+	animation: fade-in 700ms ease 300ms forwards;
 }

@@ -1,0 +1,69 @@
+---
+import { SITE_DATA } from '../data/site';
+import { withBase } from '../utils/paths';
+---
+
+<div class="max-w-3xl space-y-6">
+	<p
+		class="animate-fade-in text-xs font-semibold tracking-[0.28em] text-slate-600 uppercase md:text-sm"
+	>
+		<a
+			href={SITE_DATA.eyebrowGroupLink}
+			target="_blank"
+			rel="noreferrer"
+			class="underline decoration-slate-300 underline-offset-4 transition hover:text-slate-950 hover:decoration-slate-950"
+		>
+			{SITE_DATA.eyebrowGroup}
+		</a>
+		<span aria-hidden="true"> · </span>
+		<a
+			href={SITE_DATA.eyebrowOrgLink}
+			target="_blank"
+			rel="noreferrer"
+			class="underline decoration-slate-300 underline-offset-4 transition hover:text-slate-950 hover:decoration-slate-950"
+		>
+			{SITE_DATA.eyebrowOrg}
+		</a>
+		<span aria-hidden="true"> · </span>
+		<a
+			href={SITE_DATA.eyebrowAffiliationLink}
+			target="_blank"
+			rel="noreferrer"
+			class="underline decoration-slate-300 underline-offset-4 transition hover:text-slate-950 hover:decoration-slate-950"
+		>
+			{SITE_DATA.eyebrowAffiliation}
+		</a>
+	</p>
+
+	<h1
+		class="font-archivo animate-fade-up text-3xl leading-[0.95] font-black tracking-[-0.04em] text-slate-950 uppercase md:text-5xl lg:text-[3.5rem]"
+	>
+		{SITE_DATA.name}
+	</h1>
+
+	<div class="space-y-4">
+		<p class="text-sm font-semibold tracking-[0.22em] text-slate-700 uppercase md:text-base">
+			{SITE_DATA.role}
+		</p>
+
+		<div class="h-px w-20 bg-slate-300"></div>
+
+		<div class="flex flex-col items-start gap-2">
+			<a
+				href={withBase('/projects')}
+				class="inline-flex items-center gap-3 text-xs font-bold tracking-[0.28em] text-slate-700 uppercase transition hover:text-slate-950 md:text-sm"
+			>
+				<span>{SITE_DATA.portfolioLink}</span>
+				<span aria-hidden="true" class="text-xl leading-none font-black text-[#d97706]">→</span>
+			</a>
+			<a
+				href="#skills"
+				class="inline-flex items-center gap-3 text-xs font-bold tracking-[0.28em] text-slate-700 uppercase transition hover:text-slate-950 md:text-sm"
+			>
+				<span>{SITE_DATA.skillsLink}</span>
+				<span aria-hidden="true" class="text-xl leading-none font-black text-[#d97706]">↓</span>
+			</a>
+		</div>
+		<p class="max-w-2xl text-base leading-8 text-slate-700 md:text-lg md:leading-9 lg:text-xl"></p>
+	</div>
+</div>

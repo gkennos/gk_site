@@ -1,9 +1,162 @@
 ---
-import ContactForm from "@/components/Contact.astro";
-import Layout from "@/layouts/Layout.astro";
-import { SITE } from "@/consts";
+import { SITE_DATA, SOCIAL_LINKS } from '../data/site';
+import Layout from '../layouts/Layout.astro';
+import { withBase } from '../utils/paths';
+
+const accessKey = import.meta.env.PUBLIC_WEB3FORMS_ACCESS_KEY ?? '';
+const isConfigured = accessKey.length > 0;
 ---
 
-<Layout title={SITE.TITLE} description={SITE.DESCRIPTION}>
-    <ContactForm />
+<Layout
+	title={`Contact | ${SITE_DATA.siteName}`}
+	siteName={SITE_DATA.siteName}
+	siteDescription="Contact form and profile links."
+>
+	<section class="border-b border-slate-950 bg-white">
+		<div class="px-4 py-20 sm:px-6 md:px-8 md:py-24">
+			<div class="grid gap-12 xl:grid-cols-[minmax(0,1.1fr)_minmax(22rem,32rem)] xl:gap-16">
+				<div class="max-w-3xl space-y-6">
+					<p class="text-xs font-semibold tracking-[0.28em] text-slate-500 uppercase">Contact</p>
+					<h1
+						class="font-archivo text-5xl leading-[0.95] font-black tracking-[-0.04em] uppercase md:text-7xl"
+					>
+						Get in Touch
+					</h1>
+					<p class="max-w-2xl text-base leading-8 text-slate-700 md:text-lg md:leading-9">
+						Use the form for direct enquiries. GitHub and LinkedIn remain available for profile
+						context and project history.
+					</p>
+
+					<div class="flex flex-wrap gap-3 pt-2">
+						{
+							SOCIAL_LINKS.map((social) => {
+								const href = social.href.startsWith('/') ? withBase(social.href) : social.href;
+								const isInternal = social.href.startsWith('/');
+								const isMail = social.href.startsWith('mailto:');
+								const iconStyle =
+									'color' in social && social.color ? `color: ${social.color};` : undefined;
+								const imageStyle = 'imageStyle' in social ? String(social.imageStyle) : undefined;
+
+								return (
+									<a
+										href={href}
+										target={isInternal || isMail ? undefined : '_blank'}
+										rel={isInternal || isMail ? undefined : 'noreferrer'}
+										class="inline-flex items-center gap-3 rounded-full border border-slate-950 px-4 py-3 text-sm font-semibold tracking-[0.16em] text-slate-800 uppercase"
+									>
+										<span class="inline-flex items-center justify-center drop-shadow-[0_1.5px_1.5px_rgba(15,23,42,0.22)]">
+											{'iconClass' in social ? (
+												<i
+													class={`${social.iconClass} text-base`}
+													style={iconStyle}
+													aria-hidden="true"
+												/>
+											) : (
+												<img
+													src={withBase(social.icon!)}
+													alt={social.label}
+													class={'imageClass' in social ? social.imageClass : 'size-4'}
+													style={imageStyle}
+												/>
+											)}
+										</span>
+										<span>{social.label}</span>
+									</a>
+								);
+							})
+						}
+					</div>
+				</div>
+
+				<div class="rounded-[2rem] border border-slate-950 bg-[#fcfbf8] p-6 md:p-8">
+					{
+						!isConfigured && (
+							<div class="mb-6 rounded-2xl border border-amber-300 bg-amber-50 px-4 py-3 text-sm leading-7 text-amber-900">
+								Add <code>PUBLIC_WEB3FORMS_ACCESS_KEY</code> locally or in GitHub Actions to enable
+								submissions.
+							</div>
+						)
+					}
+
+					<form action="https://api.web3forms.com/submit" method="POST" class="space-y-5">
+						<input type="hidden" name="access_key" value={accessKey} />
+						<input type="hidden" name="subject" value={`New enquiry from ${SITE_DATA.siteName}`} />
+						<input type="hidden" name="from_name" value={SITE_DATA.siteName} />
+						<input
+							type="checkbox"
+							name="botcheck"
+							class="hidden"
+							tabindex="-1"
+							autocomplete="off"
+						/>
+
+						<div class="space-y-2">
+							<label
+								for="name"
+								class="text-xs font-semibold tracking-[0.24em] text-slate-500 uppercase"
+							>
+								Name
+							</label>
+							<input
+								id="name"
+								name="name"
+								type="text"
+								required
+								class="w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 text-base text-slate-950 transition outline-none focus:border-slate-950"
+							/>
+						</div>
+
+						<div class="space-y-2">
+							<label
+								for="email"
+								class="text-xs font-semibold tracking-[0.24em] text-slate-500 uppercase"
+							>
+								Email
+							</label>
+							<input
+								id="email"
+								name="email"
+								type="email"
+								required
+								class="w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 text-base text-slate-950 transition outline-none focus:border-slate-950"
+							/>
+						</div>
+
+						<div class="space-y-2">
+							<label
+								for="message"
+								class="text-xs font-semibold tracking-[0.24em] text-slate-500 uppercase"
+							>
+								Message
+							</label>
+							<textarea
+								id="message"
+								name="message"
+								required
+								rows={7}
+								class="w-full rounded-[1.5rem] border border-slate-300 bg-white px-4 py-3 text-base leading-7 text-slate-950 transition outline-none focus:border-slate-950"
+							></textarea>
+						</div>
+
+						<div class="space-y-3">
+							<div class="h-captcha" data-captcha="true"></div>
+							<p class="text-sm leading-7 text-slate-500">
+								hCaptcha is enabled to reduce spam on the free Web3Forms tier.
+							</p>
+						</div>
+
+						<button
+							type="submit"
+							class="inline-flex rounded-full border border-slate-950 bg-slate-950 px-5 py-3 text-sm font-semibold tracking-[0.18em] text-white uppercase disabled:cursor-not-allowed disabled:opacity-50"
+							disabled={!isConfigured}
+						>
+							Send message
+						</button>
+					</form>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<script is:inline src="https://web3forms.com/client/script.js" async defer></script>
 </Layout>

@@ -1,0 +1,269 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { withBase } from '../utils/paths';
+
+const PROJECTS = [
+	{
+		tag: 'Data Infrastructure',
+		title: 'Python Data Modelling',
+		subtitle: 'A typed interface for clinical data',
+		visualType: 'code-snippet',
+		body: `OMOP Alchemy sits between raw OMOP databases and analytical workflows, providing
+stable ORM models, explicit clinical relationships, and safe, inspectable abstractions.
+Built for research-ready analytics without imposing workflow assumptions.
+
+OMOP Alchemy puts a typed SQLAlchemy interface over the CDM: stable ORM models, explicit clinical relationships, 
+and validation logic that fires at write time. It handles complexities like polymorphic episode events, domain-specific concept checks, 
+and composable serialisation for different downstream consumers such as data visualisations or machine learning models. That same
+interface is designed to support point-of-care clinical dashboards, where patient-level outputs need to be inspectable, stable,
+and easy to serve into operational views without rewriting query logic for each new front end.
+
+		Deployed as the foundation layer of the CaVa cancer data platform across four hospitals. `,
+		href: 'https://australiancancerdatanetwork.github.io/OMOP_Alchemy/',
+		linkLabel: 'Documentation',
+		githubHref: 'https://github.com/AustralianCancerDataNetwork/OMOP_Alchemy',
+		pdfHref: '/docs/ORMforResearchReadyData_APAC2023.pdf',
+		pdfLinkLabel: 'ORM for Research Ready Data',
+		figureLabel: 'Dashboard-ready API output',
+		figureClass: 'from-[#2d2b55] via-[#2d2b55] to-[#1e1e3f]',
+		accentClass: 'bg-[#fad000]',
+		snippetLabel: 'FastAPI / JSON',
+		snippetMarkup: `<span class="text-[#7c3aed]">@router</span>.<span class="text-[#FB94FF]">get</span><span class="text-[#A599E9]">(</span><span class="text-[#A5FF90]">"/patients/{person_id}/dashboard"</span>, <span class="text-[#A599E9]">response_model</span>=<span class="text-[#9EFFFF]">DashboardResponse</span><span class="text-[#A599E9]">)</span>
+<span class="text-[#FF9D00]">def</span> <span class="text-[#9EFFFF]">patient_dashboard</span><span class="text-[#A599E9]">(</span><span class="text-[#FF628C]">person_id</span>: <span class="text-[#9EFFFF]">int</span>, <span class="text-[#FF628C]">session</span>: <span class="text-[#9EFFFF]">Session</span><span class="text-[#A599E9]">):</span>
+    <span class="text-[#9EFFFF]">patient</span> = <span class="text-[#9EFFFF]">Person</span>.<span class="text-[#FB94FF]">get</span><span class="text-[#A599E9]">(</span><span class="text-[#FF628C]">session</span>, <span class="text-[#FF628C]">person_id</span><span class="text-[#A599E9]">)</span>
+
+    <span class="text-[#9EFFFF]">timeline</span> = <span class="text-[#A599E9]">[</span>
+        <span class="text-[#9EFFFF]">ConditionTimelinePoint</span><span class="text-[#A599E9]">(</span>
+            <span class="text-[#A599E9]">label</span>=<span class="text-[#FF628C]">row</span>.<span class="text-[#A599E9]">condition_concept</span>.<span class="text-[#A599E9]">concept_name</span>,
+            <span class="text-[#A599E9]">date</span>=<span class="text-[#FF628C]">row</span>.<span class="text-[#A599E9]">condition_start_date</span>,
+            <span class="text-[#A599E9]">stage</span>=<span class="text-[#FF628C]">row</span>.<span class="text-[#FB94FF]">cancer_stage</span><span class="text-[#A599E9]">(),</span>
+        <span class="text-[#A599E9]">)</span>
+        <span class="text-[#FF9D00]">for</span> <span class="text-[#FF628C]">row</span> <span class="text-[#FF9D00]">in</span> <span class="text-[#FF628C]">patient</span>.<span class="text-[#A599E9]">conditions</span>
+    <span class="text-[#A599E9]">]</span>
+
+    <span class="text-[#FF9D00]">return</span> <span class="text-[#9EFFFF]">DashboardResponse</span><span class="text-[#A599E9]">(</span>
+        <span class="text-[#A599E9]">summary_cards</span>=<span class="text-[#A599E9]">{</span><span class="text-[#A5FF90]">"diagnoses"</span>: <span class="text-[#FF628C]">len</span><span class="text-[#A599E9]">(</span><span class="text-[#FF628C]">patient</span>.<span class="text-[#A599E9]">conditions</span><span class="text-[#A599E9]">)}</span>,
+        <span class="text-[#A599E9]">timeline</span>=<span class="text-[#9EFFFF]">timeline</span>,
+        <span class="text-[#A599E9]">filters</span>=<span class="text-[#FF628C]">patient</span>.<span class="text-[#FB94FF]">available_filters</span><span class="text-[#A599E9]">(),</span>
+    <span class="text-[#A599E9]">)</span>.<span class="text-[#FB94FF]">model_dump</span><span class="text-[#A599E9]">(</span><span class="text-[#A599E9]">mode</span>=<span class="text-[#A5FF90]">"json"</span><span class="text-[#A599E9]">)</span>`,
+	},
+	{
+		tag: 'Grounded AI',
+		title: 'Knowledge Backed Inference',
+		subtitle: 'Virtual knowledge graph over existing resources',
+		githubHref: 'https://github.com/AustralianCancerDataNetwork/omop-graph',
+		visualType: 'image-single',
+		bodyMarkup: `OMOP vocabularies encode a large biomedical semantic network, comprising hierarchical, compositional, associative relationships across curated terminologies. 
+The latent reasoning capability has largely gone unused for automated reasoning.
+<strong class="font-semibold italic text-slate-950">omop-graph</strong> exposes a virtual knowledge graph over existing CDM vocabulary tables, without any requirements for separate graph infrastructure. It classifies relationship types into explicit reasoning categories, implements a configurable concept grounding pipeline, and produces fully traceable inference paths.<br /><br /><strong class="font-semibold text-slate-950">Use case 1:</strong>
+grounding LLM outputs to auditable, standard OMOP concepts in clinical AI workflows, where embedding similarity alone offers no semantic guarantees.<br /><strong class="font-semibold text-slate-950">Use case 2:</strong>
+supporting agentic workflows that need explicit graph traversal, constrained concept selection, and traceable reasoning steps rather than opaque retrieval alone.`,
+		figureLabel: 'Semantic paths',
+		figureClass: 'from-[#f5e8ef] via-[#fcfbf8] to-[#e0f2fe]',
+		accentClass: 'bg-[#8d6a7d]',
+		imagePrimary: '/assets/img/kg-3.png',
+		pdfHref: '/docs/unlocking_latent_semantic_graph.pdf',
+		pdfLinkLabel: 'Unlocking the latent semantic graph',
+	},
+	{
+		tag: 'Clinical NLP',
+		title: 'Clinical NLP pipelines',
+		subtitle: 'Semantically grounded, configuration-driven extraction',
+		visualType: 'image-single',
+		body: `A modular clinical NLP framework designed to convert unstructured clinical text into structured, analysis-ready data under real-world constraints.
+
+The system combines schema-constrained LLM extraction with deterministic grounding pipelines, prioritising stable and reproducible outputs over model complexity. Extraction tasks are defined using structured templates (Pydantic / LinkML), which act as both prompts and output validators, enforcing predictable JSON outputs aligned with downstream data models.
+
+A custom grounding layer maps extracted entities to standard OMOP vocabularies using locally hosted ontology resources. This enables consistent concept resolution, domain-aware disambiguation, and fully traceable inference paths without reliance on external services.
+
+The pipeline is configuration-driven, allowing new clinical targets to be specified declaratively without retraining. This supports reuse across projects and deployment in restricted environments, including air-gapped systems with small locally hosted models.
+
+Deployed across clinical research workflows including condition extraction and radiotherapy structuring, achieving high accuracy with lightweight models while maintaining full transparency and control over outputs.`,
+		githubHref: 'https://github.com/AustralianCancerDataNetwork/cava_llm_manager',
+		href: 'https://australiancancerdatanetwork.github.io/cava_nlp/',
+		linkLabel: 'Pipeline documentation',
+		figureLabel: 'Schema-constrained extraction',
+		figureClass: 'from-[#ecfccb] via-[#fcfbf8] to-[#fde68a]',
+		accentClass: 'bg-[#6f8b63]',
+		imagePrimary: '/assets/img/kg-4.png',
+	},
+];
+---
+
+<Layout
+	title="Projects | Georgie Kennedy, PhD"
+	siteName="Georgie Kennedy, PhD"
+	siteDescription="Selected projects and technical outputs."
+>
+	<section class="border-b border-slate-950 bg-white">
+		<div class="px-4 py-20 sm:px-6 md:px-8 md:py-24">
+			<div class="max-w-4xl space-y-6">
+				<p class="text-xs font-semibold tracking-[0.28em] text-slate-500 uppercase">Projects</p>
+				<h1
+					class="font-archivo text-5xl leading-[0.95] font-black tracking-[-0.04em] uppercase md:text-7xl"
+				>
+					Selected Projects
+				</h1>
+				<p class="max-w-2xl text-base leading-8 text-slate-700 md:text-lg md:leading-9">
+					A selection of infrastructure, semantics, and applied clinical AI work built for research
+					teams operating in real-world settings.
+				</p>
+			</div>
+
+			<div class="mt-12 space-y-8">
+				{
+					PROJECTS.map((project) => (
+						<article class="grid gap-6 border-t border-slate-200 pt-8 first:border-t-0 first:pt-0 xl:grid-cols-[minmax(18rem,0.46fr)_minmax(0,0.54fr)] xl:items-stretch xl:gap-8">
+							<div class="xl:h-full">
+								{project.visualType === 'code-snippet' ? (
+									<div
+										class={`relative h-full overflow-hidden rounded-[1.9rem] border border-slate-950 bg-gradient-to-br ${project.figureClass}`}
+									>
+										<div class="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(255,255,255,0.08),transparent_36%),radial-gradient(circle_at_bottom_right,rgba(179,98,255,0.16),transparent_42%)]" />
+										<div class="relative space-y-5 p-6">
+											<div class="flex items-center gap-2 border-b border-[#A599E9]/20 pb-4">
+												<span class={`size-3 rounded-full ${project.accentClass}`} />
+												<span class="text-[0.65rem] font-semibold tracking-[0.16em] text-[#A599E9] uppercase">
+													{project.figureLabel}
+												</span>
+											</div>
+											<div class="space-y-3">
+												<div class="flex items-center justify-between">
+													<span class="text-[0.65rem] font-bold tracking-[0.16em] text-[#FAD000] uppercase">
+														{project.snippetLabel ?? 'Python'}
+													</span>
+													<span class="h-px w-12 bg-[#A599E9]/40" />
+												</div>
+												<pre class="overflow-x-auto rounded-[1.1rem] border border-[#A599E9]/16 bg-[#1E1E3F]/72 p-4 font-mono text-[0.68rem] leading-6 whitespace-pre-wrap text-[#A599E9] shadow-[inset_0_1px_0_rgba(255,255,255,0.03)]">
+													<code set:html={project.snippetMarkup} />
+												</pre>
+											</div>
+										</div>
+									</div>
+								) : project.visualType === 'image-single' ? (
+									project.imagePrimary && (
+										<div class="flex h-full min-h-[22rem] flex-col justify-center">
+											<div class="mb-4 flex items-center gap-2">
+												<span class={`size-3 rounded-full ${project.accentClass}`} />
+												<span class="text-[0.65rem] font-semibold tracking-[0.16em] text-slate-600 uppercase">
+													{project.figureLabel}
+												</span>
+											</div>
+											<div class="flex flex-1 items-center justify-center bg-white p-3">
+												<img
+													src={withBase(project.imagePrimary)}
+													alt={`${project.title} figure`}
+													class="max-h-full w-full object-contain object-center"
+													loading="lazy"
+												/>
+											</div>
+										</div>
+									)
+								) : (
+									<div
+										class={`relative h-full min-h-[22rem] overflow-hidden rounded-[1.9rem] border border-slate-950 bg-gradient-to-br ${project.figureClass}`}
+									>
+										<div class="absolute inset-5 rounded-[1.4rem] border border-white/70 bg-white/55 backdrop-blur-[1px]" />
+										<div class="absolute top-8 left-8 flex items-center gap-2">
+											<span class={`size-3 rounded-full ${project.accentClass}`} />
+											<span class="text-[0.65rem] font-semibold tracking-[0.16em] text-slate-600 uppercase">
+												{project.figureLabel}
+											</span>
+										</div>
+										<div class="absolute inset-x-8 bottom-8 space-y-4">
+											<div class="flex items-end gap-3">
+												<div
+													class={`h-24 w-20 rounded-[1.25rem] ${project.accentClass} opacity-85`}
+												/>
+												<div class="h-16 flex-1 rounded-[1.25rem] bg-white/90" />
+											</div>
+											<div class="flex gap-3">
+												<div class="h-3 w-24 rounded-full bg-slate-900/15" />
+												<div class="h-3 flex-1 rounded-full bg-slate-900/10" />
+											</div>
+											<p class="text-sm font-semibold tracking-[0.18em] text-slate-700 uppercase">
+												{project.figureLabel}
+											</p>
+										</div>
+									</div>
+								)}
+							</div>
+
+							<div class="xl:w-full xl:justify-self-end">
+								<div class="rounded-[1.75rem] border border-slate-950 bg-[#fcfbf8] p-6 md:p-7">
+									<div class="space-y-4">
+										<div class="flex items-center justify-end gap-4">
+											{project.githubHref && (
+												<a
+													href={project.githubHref}
+													target="_blank"
+													rel="noreferrer"
+													aria-label={`${project.title} GitHub repository`}
+													class="inline-flex size-9 items-center justify-center rounded-full border border-slate-300 bg-white text-slate-700 transition hover:border-slate-950 hover:text-slate-950"
+												>
+													<i class="fa-brands fa-github text-base" aria-hidden="true" />
+												</a>
+											)}
+											<span class="inline-flex rounded-full border border-slate-300 bg-white px-3 py-1.5 text-[0.65rem] font-semibold tracking-[0.16em] text-slate-700 uppercase">
+												{project.tag}
+											</span>
+										</div>
+										<div class="space-y-3">
+											<h2 class="font-archivo text-3xl font-black tracking-[-0.03em] text-slate-950 md:text-[2.2rem]">
+												{project.title}
+											</h2>
+											<p class="text-sm font-semibold tracking-[0.18em] text-slate-700 uppercase">
+												{project.subtitle}
+											</p>
+										</div>
+									</div>
+
+									<div
+										class="mt-6 text-base leading-8 text-slate-700"
+										set:html={project.bodyMarkup ?? project.body}
+									/>
+									{(project.href || project.pdfHref) && (
+										<div class="mt-6 flex flex-wrap gap-x-6 gap-y-3">
+											{project.href && (
+												<a
+													href={project.href}
+													target="_blank"
+													rel="noreferrer"
+													class="inline-flex items-center gap-3 text-xs font-bold tracking-[0.24em] text-slate-700 uppercase transition hover:text-slate-950"
+												>
+													<span>{project.linkLabel ?? 'View project'}</span>
+													<span
+														aria-hidden="true"
+														class="text-lg leading-none font-black text-[#d97706]"
+													>
+														→
+													</span>
+												</a>
+											)}
+											{project.pdfHref && (
+												<a
+													href={withBase(project.pdfHref)}
+													target="_blank"
+													rel="noreferrer"
+													class="inline-flex items-center gap-3 text-xs font-bold tracking-[0.24em] text-slate-700 uppercase transition hover:text-slate-950"
+												>
+													<span>{project.pdfLinkLabel ?? 'PDF'}</span>
+													<span
+														aria-hidden="true"
+														class="text-lg leading-none font-black text-[#d97706]"
+													>
+														→
+													</span>
+												</a>
+											)}
+										</div>
+									)}
+								</div>
+							</div>
+						</article>
+					))
+				}
+			</div>
+		</div>
+	</section>
+</Layout>

@@ -1,0 +1,2 @@
+export PUBLIC_WEB3FORMS_ACCESS_KEY=4bdc8586-017d-4029-a46f-1c4e5823ca10
+corepack pnpm dev

@@ -1,0 +1,41 @@
+---
+import { SOCIAL_LINKS } from '../data/site';
+import { withBase } from '../utils/paths';
+---
+
+<div id="links" class="flex flex-wrap gap-3">
+	{
+		SOCIAL_LINKS.map((social) => {
+			const href = social.href.startsWith('/') ? withBase(social.href) : social.href;
+			const isInternal = social.href.startsWith('/');
+			const isMail = social.href.startsWith('mailto:');
+			const iconStyle = 'color' in social && social.color ? `color: ${social.color};` : undefined;
+			const imageStyle = 'imageStyle' in social ? String(social.imageStyle) : undefined;
+
+			return (
+				<a
+					aria-label={social.label}
+					class="group inline-flex items-center gap-3 rounded-full border border-slate-950 bg-white px-4 py-3 text-sm font-semibold tracking-[0.16em] text-slate-800 uppercase shadow-[5px_5px_0_0_#16161d] transition duration-200 hover:translate-x-[5px] hover:translate-y-[5px] hover:shadow-none"
+					href={href}
+					target={isInternal || isMail ? undefined : '_blank'}
+					rel={isInternal || isMail ? undefined : 'noreferrer'}
+				>
+					<span class="inline-flex items-center justify-center drop-shadow-[0_1.5px_1.5px_rgba(15,23,42,0.22)]">
+						{'iconClass' in social ? (
+							<i class={`${social.iconClass} text-base`} style={iconStyle} aria-hidden="true" />
+						) : (
+							<img
+								class={'imageClass' in social ? social.imageClass : 'size-4'}
+								src={withBase(social.icon!)}
+								alt={social.label}
+								style={imageStyle}
+							/>
+						)}
+					</span>
+					<span>{social.label}</span>
+					<span class="text-slate-500 transition group-hover:text-slate-950">↗</span>
+				</a>
+			);
+		})
+	}
+</div>

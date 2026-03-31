@@ -82,6 +82,8 @@ Deployed across clinical research workflows including condition extraction and r
 		githubHref: 'https://github.com/AustralianCancerDataNetwork/cava_llm_manager',
 		href: 'https://australiancancerdatanetwork.github.io/cava_nlp/',
 		linkLabel: 'Pipeline documentation',
+		secondaryHref: 'https://australiancancerdatanetwork.github.io/omop-emb/',
+		secondaryLinkLabel: 'Embedding handling documentation',
 		figureLabel: 'Schema-constrained extraction',
 		figureClass: 'from-[#ecfccb] via-[#fcfbf8] to-[#fde68a]',
 		accentClass: 'bg-[#6f8b63]',
@@ -113,14 +115,14 @@ Deployed across clinical research workflows including condition extraction and r
 			<div class="mt-12 space-y-8">
 				{
 					PROJECTS.map((project) => (
-						<article class="grid gap-6 border-t border-slate-200 pt-8 first:border-t-0 first:pt-0 xl:grid-cols-[minmax(18rem,0.46fr)_minmax(0,0.54fr)] xl:items-stretch xl:gap-8">
-							<div class="xl:h-full">
+						<article class="grid min-w-0 gap-6 border-t border-slate-200 pt-8 first:border-t-0 first:pt-0 xl:grid-cols-[minmax(18rem,0.46fr)_minmax(0,0.54fr)] xl:items-stretch xl:gap-8">
+							<div class="min-w-0 xl:h-full">
 								{project.visualType === 'code-snippet' ? (
 									<div
-										class={`relative h-full overflow-hidden rounded-[1.9rem] border border-slate-950 bg-gradient-to-br ${project.figureClass}`}
+										class={`relative h-full min-w-0 overflow-hidden rounded-[1.9rem] border border-slate-950 bg-gradient-to-br ${project.figureClass}`}
 									>
 										<div class="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(255,255,255,0.08),transparent_36%),radial-gradient(circle_at_bottom_right,rgba(179,98,255,0.16),transparent_42%)]" />
-										<div class="relative space-y-5 p-6">
+										<div class="relative space-y-4 p-4 sm:space-y-5 sm:p-6">
 											<div class="flex items-center gap-2 border-b border-[#A599E9]/20 pb-4">
 												<span class={`size-3 rounded-full ${project.accentClass}`} />
 												<span class="text-[0.65rem] font-semibold tracking-[0.16em] text-[#A599E9] uppercase">
@@ -128,32 +130,32 @@ Deployed across clinical research workflows including condition extraction and r
 												</span>
 											</div>
 											<div class="space-y-3">
-												<div class="flex items-center justify-between">
+												<div class="flex min-w-0 items-center justify-between gap-3">
 													<span class="text-[0.65rem] font-bold tracking-[0.16em] text-[#FAD000] uppercase">
 														{project.snippetLabel ?? 'Python'}
 													</span>
 													<span class="h-px w-12 bg-[#A599E9]/40" />
 												</div>
-												<pre class="overflow-x-auto rounded-[1.1rem] border border-[#A599E9]/16 bg-[#1E1E3F]/72 p-4 font-mono text-[0.68rem] leading-6 whitespace-pre-wrap text-[#A599E9] shadow-[inset_0_1px_0_rgba(255,255,255,0.03)]">
-													<code set:html={project.snippetMarkup} />
+												<pre class="max-w-full min-w-0 overflow-x-auto rounded-[1.1rem] border border-[#A599E9]/16 bg-[#1E1E3F]/72 p-3 font-mono text-[0.62rem] leading-5 wrap-anywhere whitespace-pre-wrap text-[#A599E9] shadow-[inset_0_1px_0_rgba(255,255,255,0.03)] sm:p-4 sm:text-[0.68rem] sm:leading-6">
+													<code class="block wrap-anywhere" set:html={project.snippetMarkup} />
 												</pre>
 											</div>
 										</div>
 									</div>
 								) : project.visualType === 'image-single' ? (
 									project.imagePrimary && (
-										<div class="flex h-full min-h-[22rem] flex-col justify-center">
+										<div class="flex h-full min-h-[16rem] min-w-0 flex-col justify-center sm:min-h-[22rem]">
 											<div class="mb-4 flex items-center gap-2">
 												<span class={`size-3 rounded-full ${project.accentClass}`} />
 												<span class="text-[0.65rem] font-semibold tracking-[0.16em] text-slate-600 uppercase">
 													{project.figureLabel}
 												</span>
 											</div>
-											<div class="flex flex-1 items-center justify-center bg-white p-3">
+											<div class="flex min-w-0 flex-1 items-center justify-center bg-white p-2 sm:p-3">
 												<img
 													src={withBase(project.imagePrimary)}
 													alt={`${project.title} figure`}
-													class="max-h-full w-full object-contain object-center"
+													class="max-h-full w-full min-w-0 object-contain object-center"
 													loading="lazy"
 												/>
 											</div>
@@ -189,10 +191,10 @@ Deployed across clinical research workflows including condition extraction and r
 								)}
 							</div>
 
-							<div class="xl:w-full xl:justify-self-end">
+							<div class="min-w-0 xl:w-full xl:justify-self-end">
 								<div class="rounded-[1.75rem] border border-slate-950 bg-[#fcfbf8] p-6 md:p-7">
 									<div class="space-y-4">
-										<div class="flex items-center justify-end gap-4">
+										<div class="flex flex-wrap items-center justify-end gap-4">
 											{project.githubHref && (
 												<a
 													href={project.githubHref}
@@ -222,7 +224,7 @@ Deployed across clinical research workflows including condition extraction and r
 										class="mt-6 text-base leading-8 text-slate-700"
 										set:html={project.bodyMarkup ?? project.body}
 									/>
-									{(project.href || project.pdfHref) && (
+									{(project.href || project.secondaryHref || project.pdfHref) && (
 										<div class="mt-6 flex flex-wrap gap-x-6 gap-y-3">
 											{project.href && (
 												<a
@@ -232,6 +234,22 @@ Deployed across clinical research workflows including condition extraction and r
 													class="inline-flex items-center gap-3 text-xs font-bold tracking-[0.24em] text-slate-700 uppercase transition hover:text-slate-950"
 												>
 													<span>{project.linkLabel ?? 'View project'}</span>
+													<span
+														aria-hidden="true"
+														class="text-lg leading-none font-black text-[#d97706]"
+													>
+														→
+													</span>
+												</a>
+											)}
+											{project.secondaryHref && (
+												<a
+													href={project.secondaryHref}
+													target="_blank"
+													rel="noreferrer"
+													class="inline-flex items-center gap-3 text-xs font-bold tracking-[0.24em] text-slate-700 uppercase transition hover:text-slate-950"
+												>
+													<span>{project.secondaryLinkLabel ?? 'More documentation'}</span>
 													<span
 														aria-hidden="true"
 														class="text-lg leading-none font-black text-[#d97706]"

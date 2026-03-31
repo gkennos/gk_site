@@ -6,10 +6,12 @@
 
 html {
 	background: #f7f3ec;
+	scrollbar-gutter: stable both-edges;
 }
 
 body {
 	color: #16161d;
+	overflow-x: hidden;
 }
 
 .clinical-hero {
